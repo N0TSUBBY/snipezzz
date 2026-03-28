@@ -9,6 +9,15 @@
 </head>
 <body>
 
+    <div id="tab">
+        <a href="javascript:void(0)" onclick="navigate('home')">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="javascript:void(0)" onclick="navigate('discord')">
+            <i class="fab fa-discord"></i>
+        </a>
+    </div>
+
     <audio id="bg-music" loop>
         <source src="qasidah.mp3" type="audio/mpeg">
     </audio>
@@ -19,7 +28,8 @@
 
     <canvas id="snowflakes"></canvas>
 
-    <div class="container" id="main-content">
+    <!-- Home section -->
+    <div class="container page-content page-section" id="section-home">
         <div class="profile-header">
             <img src="pfp.jpg" alt="snipezzz" class="avatar">
             <h1 class="glow-text">snipezzz</h1>
@@ -36,12 +46,34 @@
             <a href="https://snapchat.com/t/31vIm2gR" target="_blank">
                 <i class="fab fa-snapchat"></i>
             </a>
-            <a href="https://open.spotify.com/user/31kt54uvdogmjo47ykh75fh73gfq?si=VinO44fAS9ahmssDKrVsvw”" target="_blank">
+            <a href="https://open.spotify.com/user/31kt54uvdogmjo47ykh75fh73gfq?si=VinO44fAS9ahmssDKrVsvw" target="_blank">
                 <i class="fab fa-spotify"></i>
             </a>
             <a href="https://github.com/N0TSUBBY" target="_blank">
                 <i class="fab fa-github"></i>
             </a>
+        </div>
+    </div>
+
+    <!-- Discord section -->
+    <div class="container page-content page-section" id="section-discord" style="display:none;">
+        <div class="discord-profile">
+            <div class="discord-avatar-wrapper">
+                <img id="discord-pfp" src="" alt="Discord PFP" class="discord-avatar">
+                <span id="discord-status-dot" class="status-dot"></span>
+            </div>
+            <h1 class="glow-text" id="discord-username"></h1>
+            <p class="quote" id="discord-status-text"></p>
+            <p class="custom-status" id="discord-custom-status"></p>
+        </div>
+
+        <div id="discord-presence" class="presence-card">
+            <img id="presence-art" src="" alt="" class="presence-art">
+            <div class="presence-details">
+                <span class="presence-type" id="presence-type"></span>
+                <span class="presence-name" id="presence-name"></span>
+                <span class="presence-detail" id="presence-detail"></span>
+            </div>
         </div>
     </div>
 
