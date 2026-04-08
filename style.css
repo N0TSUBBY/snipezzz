@@ -4,17 +4,33 @@
   box-sizing: border-box;
 }
 
+:root {
+  --glow-color: rgba(255, 255, 255, 0.8);
+  --social-bg: rgba(255, 255, 255, 0.05);
+  --social-border: rgba(255, 255, 255, 0.1);
+  --tab-bg: rgba(255, 255, 255, 0.07);
+  --tab-border: rgba(255, 255, 255, 0.15);
+  --presence-bg: rgba(255, 255, 255, 0.05);
+  --presence-border: rgba(255, 255, 255, 0.1);
+  --theme-btn-bg: rgba(255, 255, 255, 0.05);
+  --theme-btn-border: rgba(255, 255, 255, 0.1);
+  --snow-color: rgba(255, 255, 255, 0.7);
+  --overlay-bg: rgba(0, 0, 0, 0.95);
+  --body-overlay: rgba(0, 0, 0, 0.6);
+}
+
 body {
   /* 👇 REPLACE THIS LINK WITH YOUR BACKGROUND IMAGE LINK 👇 */
   background: #050505 url('bg.png') no-repeat center center fixed;
   background-size: cover;
   color: white;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   overflow: hidden;
+  animation: fadeIn 0.8s ease-in-out;
 }
 
 /* Darkens the background image so text is easy to read */
@@ -22,8 +38,44 @@ body::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.6); 
+  background: var(--body-overlay); 
   z-index: 0;
+  animation: overlayFade 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes overlayFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px var(--glow-color); }
+  50% { box-shadow: 0 0 30px var(--glow-color), 0 0 40px var(--glow-color); }
+}
+
+@keyframes staggerFade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: var(--glow-color); }
 }
 
 #snowflakes {
@@ -37,7 +89,7 @@ body::before {
 #play-overlay {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.95);
+  background: var(--overlay-bg);
   color: #fff;
   display: flex;
   justify-content: center;
@@ -54,10 +106,15 @@ body::before {
   z-index: 2;
   text-align: center;
   width: 90%;
-  max-width: 400px;
+  max-width: 450px;
   opacity: 0; /* Hidden until clicked */
   transition: opacity 1.5s ease, transform 1.5s ease;
   transform: translateY(20px);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(5px);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 /* When the javascript adds this class, the profile fades in */
@@ -74,14 +131,22 @@ body::before {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   object-fit: cover;
   margin-bottom: 15px;
+  transition: all 0.3s ease;
+  animation: slideUp 0.3s ease-out 0.3s both;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px var(--glow-color);
 }
 
 .glow-text {
   font-size: 2.2rem;
   font-weight: bold;
   letter-spacing: 1px;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  text-shadow: 0 0 10px var(--glow-color);
   margin-bottom: 10px;
+  animation: slideUp 0.3s ease-out 0.5s both;
 }
 
 .quote {
@@ -90,6 +155,7 @@ body::before {
   line-height: 1.4;
   margin-bottom: 25px;
   padding: 0 10px;
+  animation: slideUp 0.3s ease-out 0.7s both;
 }
 
 /* Top navigation tab */
@@ -101,15 +167,16 @@ body::before {
   display: inline-flex;
   justify-content: center;
   gap: 26px;
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--tab-bg);
   backdrop-filter: blur(12px);
   padding: 11px 32px;
   border-radius: 50px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--tab-border);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   opacity: 0;
-  transform: translateX(-50%) translateY(20px);
+  transform: translateX(-55%);
   transition: opacity 1.5s ease, transform 1.5s ease;
+  animation: fadeIn 0.6s ease-out 0.1s both;
 }
 
 #tab.visible {
@@ -128,19 +195,19 @@ body::before {
 #tab a:hover {
   opacity: 1;
   transform: scale(1.2) translateY(-2px);
-  text-shadow: 0 0 15px rgba(255, 255, 255, 1);
-}
+  text-shadow: 0 0 15px rgba(255, 255, 255, 1);  filter: drop-shadow(0 0 10px var(--glow-color));}
 
 /* Clean glassmorphism pill for socials */
 .socials {
   display: inline-flex;
   justify-content: center;
   gap: 25px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--social-bg);
   backdrop-filter: blur(10px);
   padding: 15px 30px;
   border-radius: 50px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--social-border);
+  animation: slideUp 0.3s ease-out 0.9s both;
 }
 
 .socials a {
@@ -150,7 +217,11 @@ body::before {
   opacity: 0.7;
   transition: all 0.3s ease;
 }
-
+.socials a:nth-child(1) { animation: staggerFade 0.5s ease-out 0.9s both; }
+.socials a:nth-child(2) { animation: staggerFade 0.5s ease-out 1s both; }
+.socials a:nth-child(3) { animation: staggerFade 0.5s ease-out 1.1s both; }
+.socials a:nth-child(4) { animation: staggerFade 0.5s ease-out 1.2s both; }
+.socials a:nth-child(5) { animation: staggerFade 0.5s ease-out 1.3s both; }
 .socials a:hover {
   opacity: 1;
   transform: scale(1.15) translateY(-2px);
@@ -178,13 +249,63 @@ body::before {
   border: 2px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 0 24px rgba(0, 0, 0, 0.5);
   object-fit: cover;
+  animation: slideUp 0.5s ease-out 0s both;
+}
+
+#section-discord .glow-text {
+  animation: slideUp 0.5s ease-out 0.3s both;
+}
+
+#section-discord .quote {
+  animation: slideUp 0.5s ease-out 0.45s both;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--text-color);
+  margin: 6px 0 10px 0;
+  display: inline-block;
+}
+
+#section-discord .custom-status {
+  animation: slideUp 0.5s ease-out 0.85s both;
+}
+
+.typewriter {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  max-width: 360px;
+}
+
+.status-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-text {
+  display: inline-block;
+  min-width: 0;
+  white-space: normal;
+  word-break: break-word;
+  max-width: 300px;
+  font-size: 1.25rem;
+}
+
+.discord-custom-emoji {
+  width: 1.6em;
+  height: 1.6em;
+  display: inline-block;
+  border-radius: 999px;
 }
 
 .custom-status {
-  font-size: 0.85rem;
+  font-size: 1.2rem;
+  line-height: 1.3;
   color: #bbb;
-  margin-top: -10px;
-  margin-bottom: 20px;
+  margin-top: 4px;
+  margin-bottom: 18px;
   padding: 0 10px;
   text-align: center;
 }
@@ -205,11 +326,11 @@ body::before {
   display: none;
   align-items: center;
   gap: 18px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--presence-bg);
   backdrop-filter: blur(10px);
   padding: 18px 24px;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--presence-border);
   width: 100%;
   text-align: left;
 }
@@ -251,4 +372,137 @@ body::before {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* ── Settings page ───────────────────────────────────── */
+.theme-subtitle {
+  font-size: 1rem;
+  color: #aaa;
+  margin-top: -5px;
+  animation: fadeIn 0.5s ease-out 0.3s both;
+}
+
+.settings-section {
+  margin-top: 30px;
+}
+
+.settings-section h2 {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px var(--glow-color);
+}
+
+.theme-container {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 30px;
+  padding: 35px 30px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  animation: slideUp 0.6s ease-out 0.8s both;
+}
+
+.theme-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.theme-btn {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  color: white;
+  padding: 16px;
+  border-radius: 18px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  min-width: 140px;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.theme-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.theme-btn:hover::before {
+  left: 100%;
+}
+
+.theme-preview {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  position: relative;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.2), 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.5s ease-out 0.9s both;
+}
+
+.theme-preview.midnight {
+  background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
+}
+
+.theme-preview.ocean {
+  background: linear-gradient(135deg, #0a2342 0%, #1e5a8e 100%);
+}
+
+.theme-preview.blossom {
+  background: linear-gradient(135deg, #2d1b2e 0%, #6b2d6b 100%);
+}
+
+.theme-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
+  transform: translateY(-8px) scale(1.04);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.theme-btn.selected {
+  border: 2px solid var(--glow-color);
+  box-shadow: 0 0 25px var(--glow-color), inset 0 0 20px rgba(var(--glow-rgb), 0.1);
+  animation: glowPulse 2s infinite;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+  transform: translateY(-8px) scale(1.06);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  #tab {
+    padding: 8px 20px;
+    gap: 20px;
+  }
+  #tab a {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #tab {
+    padding: 15px 35px;
+    gap: 20px;
+  }
+  #tab a {
+    font-size: 1.3rem;
+  }
 }

@@ -5,7 +5,10 @@ function navigate(section) {
     document.querySelectorAll('.page-section').forEach(s => s.style.display = 'none');
     const target = document.getElementById('section-' + section);
     if (target) target.style.display = 'block';
-    if (section === 'discord') fetchDiscordPresence();
+    if (section === 'discord') {
+        document.getElementById('discord-custom-status').querySelector('.typewriter').classList.add('typewriter');
+        fetchDiscordPresence();
+    }
 }
 
 // --- DISCORD PRESENCE ---
@@ -20,8 +23,9 @@ async function fetchDiscordPresence() {
 
         // Avatar
         const pfp = document.getElementById('discord-pfp');
+        const avatarExt = user.avatar && user.avatar.startsWith('a_') ? 'gif' : 'png';
         pfp.src = user.avatar
-            ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`
+            ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${avatarExt}?size=256`
             : `https://cdn.discordapp.com/embed/avatars/0.png`;
 
         // Username
@@ -37,15 +41,48 @@ async function fetchDiscordPresence() {
         const labels = { online: 'Online', idle: 'Idle', dnd: 'Do Not Disturb', offline: 'Offline' };
         document.getElementById('discord-status-text').textContent =
             labels[d.discord_status] || 'Offline';
+        // Scale font size based on text length, max 2.2rem (name size)
+        const statusEl = document.getElementById('discord-status-text');
+        const text = statusEl.textContent;
+        const size = Math.min(2.2, 1.0 + text.length * 0.05);
+        statusEl.style.fontSize = size + 'rem';
 
         // Custom status (type 4) — the message you set in Discord
         const customStatus = (d.activities || []).find(a => a.type === 4);
         const customStatusEl = document.getElementById('discord-custom-status');
+        const typewriterEl = customStatusEl.querySelector('.typewriter');
         if (customStatus && (customStatus.state || customStatus.emoji?.name)) {
-            const emoji = customStatus.emoji?.name ? customStatus.emoji.name + ' ' : '';
-            customStatusEl.textContent = emoji + (customStatus.state || '');
+            const stateText = customStatus.state || '';
+            const emojiData = customStatus.emoji;
+            let emojiHtml = '';
+            if (emojiData?.id) {
+                const ext = emojiData.animated ? 'gif' : 'png';
+                emojiHtml = `<img src="https://cdn.discordapp.com/emojis/${emojiData.id}.${ext}?size=48" alt="${emojiData.name || 'emoji'}" class="discord-custom-emoji"> `;
+            } else if (emojiData?.name) {
+                emojiHtml = `${emojiData.name} `;
+            }
             customStatusEl.style.display = 'block';
+            if (stateText) {
+                const escaped = stateText
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+                typewriterEl.innerHTML = `
+                    <span class="status-wrapper">
+                        <span class="status-text">${escaped}</span>
+                        ${emojiHtml}
+                    </span>
+                `;
+                typewriterEl.classList.add('typewriter');
+                typewriterEl.classList.remove('typing-active');
+                typewriterEl.style.animation = 'slideUp 0.5s ease-out 0.85s both';
+            } else {
+                typewriterEl.innerHTML = emojiHtml;
+                typewriterEl.classList.remove('typewriter');
+                typewriterEl.style.animation = '';
+            }
         } else {
+            typewriterEl.innerHTML = '';
             customStatusEl.style.display = 'none';
         }
 
@@ -109,11 +146,12 @@ function startMusic() {
     document.querySelectorAll('.page-content').forEach(el => el.classList.add('visible'));
 
     setTimeout(() => { overlay.style.display = 'none'; }, 800);
-    sessionStorage.setItem('entered', 'true');
+    localStorage.setItem('entered', 'true');
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    if (sessionStorage.getItem('entered') === 'true') {
+    loadTheme();
+    if (localStorage.getItem('entered') === 'true') {
         const overlay = document.getElementById('play-overlay');
         const bgMusic = document.getElementById('bg-music');
         const tab = document.getElementById('tab');
@@ -152,7 +190,7 @@ let flakes = Array.from({ length: 75 }, () => ({
 
 function drawFlakes() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--snow-color') || 'rgba(255, 255, 255, 0.7)';
     ctx.beginPath();
 
     flakes.forEach(f => {
@@ -167,3 +205,87 @@ function drawFlakes() {
     requestAnimationFrame(drawFlakes);
 }
 drawFlakes();
+
+// --- THEME SWITCHING ---
+const themes = {
+    default: {
+        bg: 'bg.png',
+        glow: 'rgba(255, 255, 255, 0.9)',
+        socialBg: 'rgba(255, 255, 255, 0.08)',
+        socialBorder: 'rgba(255, 255, 255, 0.15)',
+        tabBg: 'rgba(255, 255, 255, 0.1)',
+        tabBorder: 'rgba(255, 255, 255, 0.2)',
+        presenceBg: 'rgba(255, 255, 255, 0.08)',
+        presenceBorder: 'rgba(255, 255, 255, 0.15)',
+        themeBtnBg: 'rgba(255, 255, 255, 0.08)',
+        themeBtnBorder: 'rgba(255, 255, 255, 0.15)',
+        snowColor: 'rgba(255, 255, 255, 0.8)',
+        overlayBg: 'rgba(0, 0, 0, 0.95)',
+        bodyOverlay: 'rgba(0, 0, 0, 0.65)'
+    },
+    blue: {
+        bg: 'bg-blue.png',
+        glow: 'rgba(30, 144, 255, 0.9)',
+        socialBg: 'rgba(30, 144, 255, 0.15)',
+        socialBorder: 'rgba(30, 144, 255, 0.25)',
+        tabBg: 'rgba(30, 144, 255, 0.15)',
+        tabBorder: 'rgba(30, 144, 255, 0.25)',
+        presenceBg: 'rgba(30, 144, 255, 0.15)',
+        presenceBorder: 'rgba(30, 144, 255, 0.25)',
+        themeBtnBg: 'rgba(30, 144, 255, 0.15)',
+        themeBtnBorder: 'rgba(30, 144, 255, 0.25)',
+        snowColor: 'rgba(135, 206, 250, 0.8)',
+        overlayBg: 'rgba(0, 20, 40, 0.95)',
+        bodyOverlay: 'rgba(0, 0, 0, 0.5)'
+    },
+    pink: {
+        bg: 'bg-pink.png',
+        glow: 'rgba(255, 20, 147, 0.9)',
+        socialBg: 'rgba(255, 20, 147, 0.15)',
+        socialBorder: 'rgba(255, 20, 147, 0.25)',
+        tabBg: 'rgba(255, 20, 147, 0.15)',
+        tabBorder: 'rgba(255, 20, 147, 0.25)',
+        presenceBg: 'rgba(255, 20, 147, 0.15)',
+        presenceBorder: 'rgba(255, 20, 147, 0.25)',
+        themeBtnBg: 'rgba(255, 20, 147, 0.15)',
+        themeBtnBorder: 'rgba(255, 20, 147, 0.25)',
+        snowColor: 'rgba(255, 182, 193, 0.8)',
+        overlayBg: 'rgba(40, 0, 20, 0.95)',
+        bodyOverlay: 'rgba(0, 0, 0, 0.55)'
+    }
+};
+
+function setTheme(theme) {
+    const t = themes[theme];
+    document.body.style.backgroundImage = `url('${t.bg}')`;
+    document.documentElement.style.setProperty('--glow-color', t.glow);
+    document.documentElement.style.setProperty('--social-bg', t.socialBg);
+    document.documentElement.style.setProperty('--social-border', t.socialBorder);
+    document.documentElement.style.setProperty('--tab-bg', t.tabBg);
+    document.documentElement.style.setProperty('--tab-border', t.tabBorder);
+    document.documentElement.style.setProperty('--presence-bg', t.presenceBg);
+    document.documentElement.style.setProperty('--presence-border', t.presenceBorder);
+    document.documentElement.style.setProperty('--theme-btn-bg', t.themeBtnBg);
+    document.documentElement.style.setProperty('--theme-btn-border', t.themeBtnBorder);
+    document.documentElement.style.setProperty('--snow-color', t.snowColor);
+    document.documentElement.style.setProperty('--overlay-bg', t.overlayBg);
+    document.documentElement.style.setProperty('--body-overlay', t.bodyOverlay);
+    localStorage.setItem('theme', theme);
+    
+    // Update selected button
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+    document.querySelector(`.theme-btn[data-theme="${theme}"]`).classList.add('selected');
+}
+
+function loadTheme() {
+    const theme = localStorage.getItem('theme') || 'default';
+    setTheme(theme);
+}
+
+// Load theme on page load
+window.addEventListener('DOMContentLoaded', () => {
+    loadTheme();
+    // ... existing code
+});
