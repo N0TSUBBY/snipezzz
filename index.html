@@ -59,6 +59,16 @@
                 <i class="fab fa-github"></i>
             </a>
         </div>
+        <!-- Media controls: play/pause under socials -->
+        <div class="media-controls" id="media-controls">
+            <button id="media-toggle" aria-label="Play/Pause" class="media-btn">
+                <i class="fas fa-play" id="media-icon"></i>
+            </button>
+            <div class="media-progress">
+                <input type="range" id="media-seek" min="0" max="100" value="0" step="0.1">
+                <div class="media-time"><span id="media-current">0:00</span> / <span id="media-duration">0:00</span></div>
+            </div>
+        </div>
     </div>
 
     <!-- Discord section -->

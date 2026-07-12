@@ -1,4 +1,5 @@
 const DISCORD_USER_ID = '1432513562840010762';
+const MUSIC_STATE_KEY = 'bg-music-state';
 
 // --- SECTION NAVIGATION (no page reload = music never stops) ---
 function navigate(section) {
@@ -133,12 +134,70 @@ async function fetchDiscordPresence() {
 }
 
 // --- ENTRY SCREEN & MUSIC ---
+function restoreMusicPosition(bgMusic) {
+    const savedTime = Number(sessionStorage.getItem(MUSIC_STATE_KEY));
+    if (!Number.isNaN(savedTime) && savedTime > 0) {
+        const applySavedTime = () => {
+            bgMusic.currentTime = Math.min(savedTime, Math.max(0, (bgMusic.duration || savedTime) - 0.1));
+        };
+
+        if (bgMusic.readyState >= 1) {
+            applySavedTime();
+        } else {
+            bgMusic.addEventListener('loadedmetadata', applySavedTime, { once: true });
+        }
+    }
+}
+
+function bindMusicStateTracking(bgMusic) {
+    if (bgMusic.dataset.musicStateBound === 'true') {
+        return;
+    }
+
+    bgMusic.dataset.musicStateBound = 'true';
+    bgMusic.addEventListener('timeupdate', () => {
+        sessionStorage.setItem(MUSIC_STATE_KEY, String(bgMusic.currentTime));
+    });
+
+    bgMusic.addEventListener('ended', () => {
+        sessionStorage.removeItem(MUSIC_STATE_KEY);
+    });
+}
+
+function showResumeButton(bgMusic) {
+    if (document.getElementById('resume-audio-btn')) return;
+    const btn = document.createElement('button');
+    btn.id = 'resume-audio-btn';
+    btn.textContent = 'Resume audio';
+    Object.assign(btn.style, {
+        position: 'fixed',
+        right: '16px',
+        bottom: '16px',
+        padding: '10px 14px',
+        background: 'rgba(0,0,0,0.7)',
+        color: '#fff',
+        border: 'none',
+        borderRadius: '8px',
+        zIndex: 9999,
+        cursor: 'pointer'
+    });
+    btn.addEventListener('click', () => {
+        restoreMusicPosition(bgMusic);
+        bindMusicStateTracking(bgMusic);
+        bgMusic.play().catch(() => {});
+        btn.remove();
+    });
+    document.body.appendChild(btn);
+}
+
 function startMusic() {
     const overlay = document.getElementById('play-overlay');
     const bgMusic = document.getElementById('bg-music');
     const tab = document.getElementById('tab');
 
     bgMusic.volume = 0.4;
+    restoreMusicPosition(bgMusic);
+    bindMusicStateTracking(bgMusic);
     bgMusic.play().catch(e => console.log("Audio play blocked:", e));
 
     overlay.style.opacity = '0';
@@ -165,7 +224,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if (bgMusic) {
             bgMusic.volume = 0.4;
+            restoreMusicPosition(bgMusic);
+            bindMusicStateTracking(bgMusic);
+            // Try to play immediately; browsers may block autoplay without a user gesture.
             bgMusic.play().catch(() => {});
+
+            // If autoplay is blocked, resume on first user interaction (tap/click).
+            const tryResume = () => {
+                if (bgMusic.paused) {
+                    restoreMusicPosition(bgMusic);
+                    bindMusicStateTracking(bgMusic);
+                    bgMusic.play().catch(() => {});
+                }
+            };
+            window.addEventListener('pointerdown', tryResume, { once: true, passive: true });
+            window.addEventListener('touchstart', tryResume, { once: true, passive: true });
         }
     }
 });
@@ -289,3 +362,88 @@ window.addEventListener('DOMContentLoaded', () => {
     loadTheme();
     // ... existing code
 });
+
+// --- MEDIA CONTROLS (play/pause, progress, seek) ---
+function formatTime(sec) {
+    if (!isFinite(sec) || sec <= 0) return '0:00';
+    const s = Math.floor(sec % 60).toString().padStart(2, '0');
+    const m = Math.floor(sec / 60);
+    return m + ':' + s;
+}
+
+function initMediaControls() {
+    const bgMusic = document.getElementById('bg-music');
+    const toggle = document.getElementById('media-toggle');
+    const icon = document.getElementById('media-icon');
+    const seek = document.getElementById('media-seek');
+    const curEl = document.getElementById('media-current');
+    const durEl = document.getElementById('media-duration');
+
+    if (!bgMusic || !toggle || !seek || !curEl || !durEl || !icon) return;
+
+    // Update duration when metadata loads
+    const updateDuration = () => {
+        const d = isFinite(bgMusic.duration) ? bgMusic.duration : 0;
+        durEl.textContent = formatTime(d);
+        seek.max = d || 0;
+    };
+    bgMusic.addEventListener('loadedmetadata', updateDuration);
+    updateDuration();
+
+    // Toggle play/pause
+    toggle.addEventListener('click', () => {
+        if (bgMusic.paused) {
+            bgMusic.play().catch(() => {});
+        } else {
+            bgMusic.pause();
+        }
+    });
+
+    // Reflect play/pause state in icon
+    const refreshIcon = () => {
+        if (bgMusic.paused) { icon.className = 'fas fa-play'; }
+        else { icon.className = 'fas fa-pause'; }
+    };
+    bgMusic.addEventListener('play', refreshIcon);
+    bgMusic.addEventListener('pause', refreshIcon);
+    refreshIcon();
+
+    // Update seek & time while playing
+    bgMusic.addEventListener('timeupdate', () => {
+        seek.value = bgMusic.currentTime || 0;
+        curEl.textContent = formatTime(bgMusic.currentTime || 0);
+    });
+
+    // Seeking
+    let seeking = false;
+    seek.addEventListener('input', () => {
+        seeking = true;
+        curEl.textContent = formatTime(Number(seek.value) || 0);
+    });
+    seek.addEventListener('change', () => {
+        bgMusic.currentTime = Number(seek.value) || 0;
+        seeking = false;
+    });
+
+    // Keyboard shortcuts: Space to toggle, ArrowLeft/ArrowRight to seek
+    const onKey = (e) => {
+        const active = document.activeElement;
+        // don't interfere when typing in inputs
+        if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable)) return;
+
+        if (e.code === 'Space') {
+            e.preventDefault();
+            if (bgMusic.paused) bgMusic.play().catch(() => {});
+            else bgMusic.pause();
+        } else if (e.code === 'ArrowLeft') {
+            e.preventDefault();
+            bgMusic.currentTime = Math.max(0, (bgMusic.currentTime || 0) - 5);
+        } else if (e.code === 'ArrowRight') {
+            e.preventDefault();
+            bgMusic.currentTime = Math.min(bgMusic.duration || Infinity, (bgMusic.currentTime || 0) + 5);
+        }
+    };
+    window.addEventListener('keydown', onKey);
+}
+
+window.addEventListener('DOMContentLoaded', initMediaControls);

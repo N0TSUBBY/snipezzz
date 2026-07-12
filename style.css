@@ -228,6 +228,80 @@ body::before {
   text-shadow: 0 0 15px rgba(255, 255, 255, 1);
 }
 
+/* Media controls placed beneath the socials pill (animated, thicker style) */
+.media-controls {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  opacity: 0;
+  animation: slideUp 0.32s ease-out 1.05s both;
+}
+
+.media-btn {
+  background: var(--tab-bg);
+  border: 1px solid var(--tab-border);
+  color: white;
+  width: 56px;
+  height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+
+.media-btn:active { transform: scale(0.98); box-shadow: 0 4px 12px rgba(0,0,0,0.35); }
+
+.media-btn:focus { outline: 2px solid rgba(255,255,255,0.12); }
+
+.media-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px;
+  max-width: 320px;
+  width: 45%;
+}
+
+.media-progress input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+  outline: none;
+  position: relative;
+}
+.media-progress input[type="range"]::-webkit-slider-runnable-track {
+  height: 10px;
+}
+.media-progress input[type="range"]::-moz-range-track {
+  height: 10px;
+}
+.media-progress input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  margin-top: -2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 0 12px var(--glow-color);
+  cursor: pointer;
+}
+.media-progress input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 0 12px var(--glow-color);
+  cursor: pointer;
+}
+
+
 /* ── Discord page ───────────────────────────────────── */
 .discord-profile {
   display: flex;
