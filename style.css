@@ -20,7 +20,6 @@
 }
 
 body {
-  /* 👇 REPLACE THIS LINK WITH YOUR BACKGROUND IMAGE LINK 👇 */
   background: #050505 url('bg.png') no-repeat center center fixed;
   background-size: cover;
   color: white;
@@ -110,11 +109,12 @@ body::before {
   opacity: 0; /* Hidden until clicked */
   transition: opacity 1.5s ease, transform 1.5s ease;
   transform: translateY(20px);
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(5px);
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  background: rgba(7, 13, 16, 0.84);
+  backdrop-filter: blur(14px);
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.38);
+  border: 1px solid rgba(126, 231, 135, 0.12);
 }
 
 /* When the javascript adds this class, the profile fades in */
@@ -127,8 +127,8 @@ body::before {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(126, 231, 135, 0.26);
+  box-shadow: 0 0 28px rgba(0, 0, 0, 0.5);
   object-fit: cover;
   margin-bottom: 15px;
   transition: all 0.3s ease;
@@ -144,7 +144,7 @@ body::before {
   font-size: 2.2rem;
   font-weight: bold;
   letter-spacing: 1px;
-  text-shadow: 0 0 10px var(--glow-color);
+  text-shadow: 0 0 12px var(--glow-color);
   margin-bottom: 10px;
   animation: slideUp 0.3s ease-out 0.5s both;
 }
@@ -168,11 +168,11 @@ body::before {
   justify-content: center;
   gap: 26px;
   background: var(--tab-bg);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
   padding: 11px 32px;
   border-radius: 50px;
   border: 1px solid var(--tab-border);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.34);
   opacity: 0;
   transform: translateX(-55%);
   transition: opacity 1.5s ease, transform 1.5s ease;
@@ -188,7 +188,7 @@ body::before {
   color: white;
   font-size: 1.4rem;
   text-decoration: none;
-  opacity: 0.7;
+  opacity: 0.78;
   transition: all 0.3s ease;
 }
 
@@ -201,9 +201,10 @@ body::before {
 .socials {
   display: inline-flex;
   justify-content: center;
-  gap: 25px;
+  gap: 18px;
+  flex-wrap: wrap;
   background: var(--social-bg);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(14px);
   padding: 15px 30px;
   border-radius: 50px;
   border: 1px solid var(--social-border);
@@ -211,11 +212,15 @@ body::before {
 }
 
 .socials a {
-  color: white;
+  color: #d6f9db;
   font-size: 1.5rem;
   text-decoration: none;
-  opacity: 0.7;
+  opacity: 0.78;
   transition: all 0.3s ease;
+  min-width: 2rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 .socials a:nth-child(1) { animation: staggerFade 0.5s ease-out 0.9s both; }
 .socials a:nth-child(2) { animation: staggerFade 0.5s ease-out 1s both; }
@@ -495,6 +500,18 @@ body::before {
   #tab a {
     font-size: 1.2rem;
   }
+
+  .socials {
+    gap: 16px;
+    padding: 13px 20px;
+    max-width: min(100%, 340px);
+  }
+
+  .socials a {
+    font-size: 1.5rem;
+    min-width: 2.1rem;
+    min-height: 2.1rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -504,5 +521,36 @@ body::before {
   }
   #tab a {
     font-size: 1.3rem;
+  }
+
+  .socials {
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 24px;
+    max-width: calc(100vw - 28px);
+  }
+
+  .socials a {
+    font-size: 1.5rem;
+    min-width: 2rem;
+    min-height: 2rem;
+    transform: none;
+  }
+
+  .socials a:hover {
+    transform: scale(1.08) translateY(-1px);
+  }
+}
+
+@media (max-width: 360px) {
+  .socials {
+    gap: 10px;
+    padding: 11px 14px;
+  }
+
+  .socials a {
+    font-size: 1.5rem;
+    min-width: 1.85rem;
+    min-height: 1.85rem;
   }
 }

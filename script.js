@@ -132,14 +132,10 @@ async function fetchDiscordPresence() {
     }
 }
 
-// --- ENTRY SCREEN & MUSIC ---
+// --- ENTRY SCREEN ---
 function startMusic() {
     const overlay = document.getElementById('play-overlay');
-    const bgMusic = document.getElementById('bg-music');
     const tab = document.getElementById('tab');
-
-    bgMusic.volume = 0.4;
-    bgMusic.play().catch(e => console.log("Audio play blocked:", e));
 
     overlay.style.opacity = '0';
     tab.classList.add('visible');
@@ -153,7 +149,6 @@ window.addEventListener('DOMContentLoaded', () => {
     loadTheme();
     if (localStorage.getItem('entered') === 'true') {
         const overlay = document.getElementById('play-overlay');
-        const bgMusic = document.getElementById('bg-music');
         const tab = document.getElementById('tab');
 
         if (overlay) { overlay.style.transition = 'none'; overlay.style.display = 'none'; }
@@ -162,11 +157,6 @@ window.addEventListener('DOMContentLoaded', () => {
             el.style.transition = 'none';
             el.classList.add('visible');
         });
-
-        if (bgMusic) {
-            bgMusic.volume = 0.4;
-            bgMusic.play().catch(() => {});
-        }
     }
 });
 
