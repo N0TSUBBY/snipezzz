@@ -1,4 +1,4 @@
-const DISCORD_USER_ID = '1432513562840010762';
+const DISCORD_USER_ID = '1521175667839078514';
 
 // --- SECTION NAVIGATION (no page reload = music never stops) ---
 function navigate(section) {
