@@ -1,111 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>snipezzz | Profile</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    <div id="tab">
-        <a href="javascript:void(0)" onclick="navigate('home')">
-            <i class="fas fa-home"></i>
-        </a>
-        <a href="javascript:void(0)" onclick="navigate('discord')">
-            <i class="fab fa-discord"></i>
-        </a>
-        <a href="javascript:void(0)" onclick="navigate('settings')">
-            <i class="fas fa-cog"></i>
-        </a>
-    </div>
-
-    <div id="play-overlay" onclick="startMusic()">
-        <p>[ click anywhere to enter ]</p>
-    </div>
-
-    <canvas id="snowflakes"></canvas>
-
-    <!-- Home section -->
-    <div class="container page-content page-section" id="section-home">
-        <div class="profile-header">
-            <img src="pfp.jpg" alt="snipezzz" class="avatar">
-            <h1 class="glow-text">snipezzz</h1>
-            <p class="quote" id="main-quote">O people of mankind, time is short, life is not long. Spend it wisely</p>
-        </div>
-
-        <div class="socials">
-            <a href="https://www.tiktok.com/@..subby?_r=1&_t=ZN-94yG5ioFKYY" target="_blank">
-                <i class="fab fa-tiktok"></i>
-            </a>
-            <a href="https://m.twitch.tv/LIL_SN1PEZXZ/home" target="_blank" aria-label="Twitch">
-                <i class="fab fa-twitch"></i>
-            </a>
-            <a href="https://x.com/lil_snipezxz?s=11" target="_blank" aria-label="X">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="https://open.spotify.com/user/31kt54uvdogmjo47ykh75fh73gfq?si=VinO44fAS9ahmssDKrVsvw" target="_blank">
-                <i class="fab fa-spotify"></i>
-            </a>
-            <a href="https://github.com/N0TSUBBY" target="_blank">
-                <i class="fab fa-github"></i>
-            </a>
-        </div>
-    </div>
-
-    <!-- Discord section -->
-    <div class="container page-content page-section" id="section-discord" style="display:none;">
-        <div class="discord-profile">
-            <div class="discord-avatar-wrapper">
-                <img id="discord-pfp" src="" alt="Discord PFP" class="discord-avatar">
-                <span id="discord-status-dot" class="status-dot"></span>
-            </div>
-            <h1 class="glow-text" id="discord-username"></h1>
-            <p class="quote" id="discord-status-text"></p>
-            <p class="custom-status" id="discord-custom-status"><span class="typewriter"></span></p>
-        </div>
-
-        <div id="discord-presence" class="presence-card">
-            <img id="presence-art" src="" alt="" class="presence-art">
-            <div class="presence-details">
-                <span class="presence-type" id="presence-type"></span>
-                <span class="presence-name" id="presence-name"></span>
-                <span class="presence-detail" id="presence-detail"></span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Settings section -->
-    <div class="container page-content page-section" id="section-settings" style="display:none;">
-        <div class="profile-header">
-            <h1 class="glow-text" style="font-size: 3rem; margin-bottom: 8px;">Themes</h1>
-            <p class="theme-subtitle">Choose your vibe</p>
-        </div>
-
-        <div class="settings-section">
-            <div class="theme-container">
-                <div class="theme-buttons">
-                    <button onclick="setTheme('default')" class="theme-btn" data-theme="default">
-                        <div class="theme-preview midnight"></div>
-                        <span>Midnight</span>
-                    </button>
-                    <button onclick="setTheme('blue')" class="theme-btn" data-theme="blue">
-                        <div class="theme-preview ocean"></div>
-                        <span>Ocean</span>
-                    </button>
-                    <button onclick="setTheme('pink')" class="theme-btn" data-theme="pink">
-                        <div class="theme-preview blossom"></div>
-                        <span>Blossom</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#121314" />
+    <meta name="description" content="The social home of snipezzz." />
+    <title>snipezzz / social home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
