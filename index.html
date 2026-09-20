@@ -3,109 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>snipezzz | Profile</title>
+    <meta name="theme-color" content="#0a0b0d">
+    <title>snipezzz / links</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="cursor-glow" aria-hidden="true"></div>
+    <div class="grid-floor" aria-hidden="true"></div>
+    <div class="light-streak light-streak-one" aria-hidden="true"></div>
+    <div class="light-streak light-streak-two" aria-hidden="true"></div>
 
-    <div id="tab">
-        <a href="javascript:void(0)" onclick="navigate('home')">
-            <i class="fas fa-home"></i>
-        </a>
-        <a href="javascript:void(0)" onclick="navigate('discord')">
-            <i class="fab fa-discord"></i>
-        </a>
-        <a href="javascript:void(0)" onclick="navigate('settings')">
-            <i class="fas fa-cog"></i>
-        </a>
+    <div id="play-overlay">
+        <div class="enter-mark"><span></span><span></span><span></span></div>
+        <p class="enter-kicker">SNIPEZZZ / PERSONAL FREQUENCY</p>
+        <button class="enter-button" onclick="startMusic()">Enter <i class="fa-solid fa-arrow-right"></i></button>
+        <p class="enter-hint">click anywhere to continue</p>
     </div>
 
-    <div id="play-overlay" onclick="startMusic()">
-        <p>[ click anywhere to enter ]</p>
-    </div>
+    <header class="site-header">
+        <a class="brand" href="index.html"><span class="brand-symbol">S</span><span>SNIPEZZZ</span></a>
+        <span class="header-code">ONLINE / 24—7</span>
+    </header>
 
-    <canvas id="snowflakes"></canvas>
+    <main class="profile-shell">
+        <div class="side-note side-note-left">SCROLL LESS<br>LIVE MORE</div>
+        <div class="side-note side-note-right">NO SIGNAL<br>NO PROBLEM</div>
 
-    <!-- Home section -->
-    <div class="container page-content page-section" id="section-home">
-        <div class="profile-header">
-            <img src="pfp.jpg" alt="snipezzz" class="avatar">
-            <h1 class="glow-text">snipezzz</h1>
-            <p class="quote" id="main-quote">O people of mankind, time is short, life is not long. Spend it wisely</p>
-        </div>
-
-        <div class="socials">
-            <a href="https://www.tiktok.com/@..subby?_r=1&_t=ZN-94yG5ioFKYY" target="_blank">
-                <i class="fab fa-tiktok"></i>
-            </a>
-            <a href="https://m.twitch.tv/LIL_SN1PEZXZ/home" target="_blank" aria-label="Twitch">
-                <i class="fab fa-twitch"></i>
-            </a>
-            <a href="https://x.com/lil_snipezxz?s=11" target="_blank" aria-label="X">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="https://open.spotify.com/user/31kt54uvdogmjo47ykh75fh73gfq?si=VinO44fAS9ahmssDKrVsvw" target="_blank">
-                <i class="fab fa-spotify"></i>
-            </a>
-            <a href="https://github.com/N0TSUBBY" target="_blank">
-                <i class="fab fa-github"></i>
-            </a>
-        </div>
-    </div>
-
-    <!-- Discord section -->
-    <div class="container page-content page-section" id="section-discord" style="display:none;">
-        <div class="discord-profile">
-            <div class="discord-avatar-wrapper">
-                <img id="discord-pfp" src="" alt="Discord PFP" class="discord-avatar">
-                <span id="discord-status-dot" class="status-dot"></span>
+        <section class="profile-card page-content">
+            <div class="profile-topline"><span>01</span><span class="topline-rule"></span><span>THE DIGITAL HANGOUT</span></div>
+            <div class="portrait-stage">
+                <div class="orbit orbit-one"></div>
+                <div class="orbit orbit-two"></div>
+                <div class="orbit orbit-three"></div>
+                <div class="portrait-glow"></div>
+                <div class="avatar-frame"><img src="pfp.jpg" alt="snipezzz" class="avatar"><span class="avatar-corner avatar-corner-tl"></span><span class="avatar-corner avatar-corner-br"></span></div>
+                <span class="orbit-label orbit-label-top">LIVE</span>
+                <span class="orbit-label orbit-label-bottom">SZN 04</span>
             </div>
-            <h1 class="glow-text" id="discord-username"></h1>
-            <p class="quote" id="discord-status-text"></p>
-            <p class="custom-status" id="discord-custom-status"><span class="typewriter"></span></p>
-        </div>
-
-        <div id="discord-presence" class="presence-card">
-            <img id="presence-art" src="" alt="" class="presence-art">
-            <div class="presence-details">
-                <span class="presence-type" id="presence-type"></span>
-                <span class="presence-name" id="presence-name"></span>
-                <span class="presence-detail" id="presence-detail"></span>
+            <div class="profile-copy">
+                <div class="handle-line"><span class="status-dot"></span><span>currently somewhere on the internet</span></div>
+                <h1>snipezzz<span class="title-dot">.</span></h1>
+                <p class="tagline">just here to make cool things<br><span>and share good energy.</span></p>
             </div>
-        </div>
-    </div>
+            <div class="social-heading"><span>FIND ME HERE</span><span class="social-heading-line"></span><span>05</span></div>
+            <nav class="social-grid" aria-label="Social links">
+                <a class="social-link magnetic" href="https://www.tiktok.com/@..subby?_r=1&_t=ZN-94yG5ioFKYY" target="_blank" rel="noopener"><span class="social-icon"><i class="fab fa-tiktok"></i></span><span class="social-name">TikTok</span><i class="fa-solid fa-arrow-up-right-from-square social-arrow"></i></a>
+                <a class="social-link magnetic" href="https://m.twitch.tv/LIL_SN1PEZXZ/home" target="_blank" rel="noopener"><span class="social-icon"><i class="fab fa-twitch"></i></span><span class="social-name">Twitch</span><i class="fa-solid fa-arrow-up-right-from-square social-arrow"></i></a>
+                <a class="social-link magnetic" href="https://x.com/lil_snipezxz?s=11" target="_blank" rel="noopener"><span class="social-icon"><i class="fab fa-x-twitter"></i></span><span class="social-name">X / Twitter</span><i class="fa-solid fa-arrow-up-right-from-square social-arrow"></i></a>
+                <a class="social-link magnetic" href="https://open.spotify.com/user/31kt54uvdogmjo47ykh75fh73gfq?si=VinO44fAS9ahmssDKrVsvw" target="_blank" rel="noopener"><span class="social-icon"><i class="fab fa-spotify"></i></span><span class="social-name">Spotify</span><i class="fa-solid fa-arrow-up-right-from-square social-arrow"></i></a>
+                <a class="social-link magnetic" href="https://github.com/N0TSUBBY" target="_blank" rel="noopener"><span class="social-icon"><i class="fab fa-github"></i></span><span class="social-name">GitHub</span><i class="fa-solid fa-arrow-up-right-from-square social-arrow"></i></a>
+            </nav>
+            <div class="profile-bottom"><span>O people of mankind, time is short.</span><span>© 2026 SNIPEZZZ</span></div>
+        </section>
+    </main>
 
-    <!-- Settings section -->
-    <div class="container page-content page-section" id="section-settings" style="display:none;">
-        <div class="profile-header">
-            <h1 class="glow-text" style="font-size: 3rem; margin-bottom: 8px;">Themes</h1>
-            <p class="theme-subtitle">Choose your vibe</p>
-        </div>
-
-        <div class="settings-section">
-            <div class="theme-container">
-                <div class="theme-buttons">
-                    <button onclick="setTheme('default')" class="theme-btn" data-theme="default">
-                        <div class="theme-preview midnight"></div>
-                        <span>Midnight</span>
-                    </button>
-                    <button onclick="setTheme('blue')" class="theme-btn" data-theme="blue">
-                        <div class="theme-preview ocean"></div>
-                        <span>Ocean</span>
-                    </button>
-                    <button onclick="setTheme('pink')" class="theme-btn" data-theme="pink">
-                        <div class="theme-preview blossom"></div>
-                        <span>Blossom</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <footer class="site-footer"><span>DESIGNED IN THE VOID</span><span class="footer-signal"><i></i> ALL SYSTEMS NOMINAL</span></footer>
+    <audio id="profile-audio" src="qasidah.mp3" loop preload="none"></audio>
     <script src="script.js"></script>
 </body>
 </html>
