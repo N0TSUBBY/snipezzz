@@ -1,3 +1,4 @@
+import pfp from './pfp.jpg';
 import { useEffect, useState } from 'react';
 import {
   ChevronDown,
@@ -101,7 +102,7 @@ function HomePage() {
   return <div className="page home-page"><ProfileHeader label="snipezzz" /><div className="socials">{socials.map(({ label, icon, className, href }) => <a className={className} key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} title={label}><i className={icon} /></a>)}</div><p className="footer-note"><Sparkles size={13} /> small links for friends</p></div>;
 }
 
-function ProfileHeader({ label, children, image = '/pfp.jpg', imageAlt = 'snipezzz', status = 'online' }) {
+function ProfileHeader({ label, children, image = pfp, imageAlt = 'snipezzz', status = 'online' }) {
   return <header className="profile-header"><div className="avatar-wrap"><img src={image} alt={imageAlt} className="avatar" /><span className={`online ${status}`} /></div><h1>{label}<span>.</span></h1>{children || <p className="quote">O people of mankind, time is short, life is not long. Spend it wisely</p>}</header>;
 }
 
@@ -111,7 +112,7 @@ function DiscordPage() {
   useEffect(() => { fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`).then((response) => response.json()).then((json) => json.success ? setData(json.data) : setFailed(true)).catch(() => setFailed(true)); }, []);
   const user = data?.discord_user;
   const status = data?.discord_status || 'offline';
-  const avatar = user?.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${user.avatar.startsWith('a_') ? 'gif' : 'png'}?size=256` : '/pfp.jpg';
+  const avatar = user?.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${user.avatar.startsWith('a_') ? 'gif' : 'png'}?size=256` : pfp.jpg;
   const statusText = { online: 'Online', idle: 'Idle', dnd: 'Do Not Disturb', offline: 'Offline' }[status];
   const activity = data?.activities?.find((item) => item.type !== 4);
   const customStatus = data?.activities?.find((item) => item.type === 4)?.state;
@@ -121,6 +122,6 @@ function DiscordPage() {
 function SettingsPage({ theme, setTheme }) {
   return <div className="page settings-page"><div className="section-title"><span>PERSONALISE / THEMES</span><small>03</small></div><header className="settings-header"><div className="settings-symbol"><Palette size={24} /></div><h1>Make it yours</h1><p>Pick a mood for the little room.</p></header><div className="theme-buttons">{Object.entries(themes).map(([key, item]) => <button key={key} className={`theme-btn ${theme === key ? 'selected' : ''}`} onClick={() => setTheme(key)}><span className={`theme-preview ${item.className}`}><i /><b /></span><span className="theme-copy"><strong>{item.label}</strong><small>{item.description}</small><em>{item.mood}</em></span>{theme === key && <Check size={17} />}</button>)}</div><p className="footer-note"><Palette size={13} /> theme saved on this device</p></div>;
 }
-function EntryOverlay({ onEnter }) { return <div className="entry"><div className="entry-box"><div className="entry-avatar"><img src="/pfp.jpg" alt="" /></div><p>click anywhere to enter</p><button onClick={onEnter}>enter <Sparkles size={15} /></button></div></div>; }
+function EntryOverlay({ onEnter }) { return <div className="entry"><div className="entry-box"><div className="entry-avatar"><img src={pfp} alt="" /></div><p>click anywhere to enter</p><button onClick={onEnter}>enter <Sparkles size={15} /></button></div></div>; }
 
 export default App;
